@@ -7,16 +7,20 @@
     
     <servlet>
         <servlet-name>GetJson</servlet-name>
-        <servlet-class>servlets.data.GetJson</servlet-class>
+        <servlet-class>generators.servlets.GetJson</servlet-class>
     </servlet>
 
     <servlet>
         <servlet-name>Graph</servlet-name>
-        <servlet-class>servlets.visualization.Graph</servlet-class>
+        <servlet-class>servlets.Graph</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GraphWithArr</servlet-name>
-        <servlet-class>servlets.visualization.GraphWithArr</servlet-class>
+        <servlet-name>GraphArrows</servlet-name>
+        <servlet-class>servlets.GraphArrows</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GraphGlyph</servlet-name>
+        <servlet-class>servlets.GraphGlyph</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -28,10 +32,13 @@
         <servlet-name>Graph</servlet-name>
         <url-pattern>/graph</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
-        <servlet-name>GraphWithArr</servlet-name>
-        <url-pattern>/graphWithArr</url-pattern>
+        <servlet-name>GraphArrows</servlet-name>
+        <url-pattern>/graphArrows</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GraphGlyph</servlet-name>
+        <url-pattern>/graphGlyph</url-pattern>
     </servlet-mapping>
    
     

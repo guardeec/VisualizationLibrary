@@ -1,4 +1,4 @@
-package servlets.visualization;
+package servlets;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,12 +17,15 @@ import java.util.Map;
  */
 @WebServlet(name = "Graph")
 public class Graph extends HttpServlet {
+    /*
+    Сервлет для отображения неориентированного графа
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher view = request.getRequestDispatcher("Graph.html");
         view.forward(request, response);
-
     }
 }

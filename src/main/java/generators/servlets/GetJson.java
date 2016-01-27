@@ -1,6 +1,8 @@
-package servlets.data;
+package generators.servlets;
 
-import POJO.Params;
+import generators.methods.GraphArrowsGenerator;
+import generators.methods.GraphGenerator;
+import generators.methods.GraphGlyphGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +14,10 @@ import java.io.PrintWriter;
 
 /**
  * Created by guardeec on 25.01.16.
+ */
+/*
+сервлет для отправки сгенерированного json
+впоследствии весь пакет generators будет заменен на модуль импорта данных визуализации
  */
 @WebServlet(name = "GetJson")
 public class GetJson extends HttpServlet {
@@ -28,18 +34,23 @@ public class GetJson extends HttpServlet {
             в запросе задаётся какой набор данных необходим:
             0 - неориентированный граф
             1 - ориентированный граф
+            2 - граф с глифами
         */
         int typeOfVisualisation = Integer.parseInt(request.getParameterMap().get("type")[0]);
 
         String json="";
         switch (typeOfVisualisation){
             case 0: {
-                json = Params.generateRandomGraph(numberOfNodes);
+                json = GraphGenerator.generateGraph(numberOfNodes);
                 break;
             }
             case 1: {
-                json = Params.generateRandomGraphWithArrows(numberOfNodes);
+                json = GraphArrowsGenerator.generateGraphArrows(numberOfNodes);
+                break;
             }
+            case 2:
+                json = GraphGlyphGenerator.generateGraphGlyph(numberOfNodes);
+                break;
         }
 
         PrintWriter out = response.getWriter();

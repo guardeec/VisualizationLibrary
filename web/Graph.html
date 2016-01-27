@@ -34,6 +34,7 @@
                 .links(graph.links)
                 .start();
 
+        /*
         svg.append("defs").append("marker")
                 .attr("id", "marker")
                 .attr("viewBox", "0 -5 10 10")
@@ -45,6 +46,7 @@
                 .append("path")
                 .style("opacity", 0.2)
                 .attr("d", "M0,-5L10,0L0,5");
+                */
 
         var link = svg.selectAll(".link")
                 .data(graph.links)
@@ -53,6 +55,7 @@
                 .style("stroke", function(d) { return color(d.color); })
                 .style("stroke-opacity", function(d) { return d.opacity; })
                 .style("stroke-width", function(d) { return Math.sqrt(d.value); })
+                /*
                 .attr("marker-end", function(d) {
                     svg.append("defs").append("marker")
                             .attr("id", "marker"+"Opacity"+d.name)
@@ -81,6 +84,7 @@
                             .attr("d", "M0,-5L10,0L0,5");
                     return "url(#"+"marker"+"Opacity"+d.name+")";
                 });
+                */
         ;
 
         var images = [

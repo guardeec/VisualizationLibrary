@@ -38,7 +38,7 @@
 
 
 
-    d3.json("miserablesTest.json", function(error, graph) {
+    d3.json("http://localhost:8080/getJson?nodes=30&type=2", function(error, graph) {
 
         if (error) throw error;
         force
@@ -55,7 +55,10 @@
         var link = svg.selectAll(".link")
                 .data(graph.links)
                 .enter().append("line")
-                .attr("class", "link");
+                .attr("class", "link")
+                .style("stroke", function(d) { return color(d.color); })
+                .style("stroke-opacity", function(d) { return d.opacity; })
+                .style("stroke-width", function(d) { return Math.sqrt(d.width); });
 
         var node = svg.selectAll(".node")
                 .data(graph.nodes)
@@ -72,7 +75,7 @@
                 .attr("d", d3.svg.arc()
                         .outerRadius(function(d, i) { return d.data.radius; })
                         .innerRadius(0))
-                .attr("fill", function(d, i) { return color(d.data.group); })
+                .attr("fill", function(d, i) { return color(d.data.colorIn); })
         ;
 
 
@@ -83,7 +86,7 @@
                 .attr("d", d3.svg.arc()
                         .outerRadius(function(d, i) { return d.data.radius+d.data.radius/3+1; })
                         .innerRadius(function(d, i) { return d.data.radius+1; }))
-                .attr("fill", function(d, i) { return color(d.data.groupOut); });
+                .attr("fill", function(d, i) { return color(d.data.colorOut); });
 
 
 
