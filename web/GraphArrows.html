@@ -52,27 +52,15 @@
                 .attr("class", "link")
                 .style("stroke", function(d) { return color(d.color); })
                 .style("stroke-opacity", function(d) { return d.opacity; })
-                .style("stroke-width", function(d) { return Math.sqrt(d.value); })
+                .style("stroke-width", function(d) { return Math.sqrt(d.width); })
                 .attr("marker-end", function(d) {
                     svg.append("defs").append("marker")
                             .attr("id", "marker"+"Opacity"+d.name)
                             .attr("viewBox", "0 -5 10 10")
                             .attr("refX", d.radius*2.5+5)
                             .attr("refY", 0)
-                            .attr("markerWidth", function(){
-                                if (d.arrows){
-                                    return Math.sqrt(d.radius);
-                                }else {
-                                    return 0;
-                                }
-                            })
-                            .attr("markerHeight", function() {
-                                if (d.arrows) {
-                                    return Math.sqrt(d.radius);
-                                } else {
-                                    return 0;
-                                }
-                            })
+                            .attr("markerWidth", function(){return Math.sqrt(d.radius);})
+                            .attr("markerHeight", function() {return Math.sqrt(d.radius);})
                             .attr("orient", "auto")
                             .append("path")
                             .style("blend-mode", "overlay")

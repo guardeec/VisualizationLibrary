@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+
+    <style>
+
+        .node {
+            stroke: #fff;
+            stroke-width: 1.5px;
+        }
+
+        .link {
+            stroke: #808080;
+            stroke-opacity: .6;
+        }
+
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+    var width = 960,
+            height = 500,
+            color = d3.scale.category10();
+
+    var force = d3.layout.force()
+            .charge(-120)
+            .linkDistance(50)
+            .size([width, height]);
+
+    var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+
+
+
+
+    d3.json("http://localhost:8080/getJson?nodes=30&type=3", function(error, graph) {
+
+        if (error) throw error;
+        force
+                .nodes(graph.nodes)
+                .links(graph.links)
+                .start();
+
+        var pie = d3.layout.pie()
+                .sort(null)
+                .value(function(d) { return d.value; });
+
+
+
+        var link = svg.selectAll(".link")
+                .data(graph.links)
+                .enter().append("line")
+                .attr("class", "link")
+                .style("stroke", function(d) { return color(d.color); })
+                .style("stroke-opacity", function(d) { return d.opacity; })
+                .style("stroke-width", function(d) { return Math.sqrt(d.width); })
+                .attr("marker-end", function(d) {
+                    svg.append("defs").append("marker")
+                            .attr("id", "marker"+"Opacity"+d.name)
+                            .attr("viewBox", "0 -5 10 10")
+                            .attr("refX", d.radius*2.5+5)
+                            .attr("refY", 0)
+                            .attr("markerWidth", function(){return Math.sqrt(d.radius+d.radius/3+3);})
+                            .attr("markerHeight", function() {return Math.sqrt(d.radius+d.radius/3+3);})
+                            .attr("orient", "auto")
+                            .append("path")
+                            .style("blend-mode", "overlay")
+                            .style("fill", color(d.color))
+                            .style("opacity", d.opacity)
+                            .attr("d", "M0,-5L10,0L0,5");
+                    return "url(#"+"marker"+"Opacity"+d.name+")";
+                });
+
+        var node = svg.selectAll(".node")
+                .data(graph.nodes)
+                .enter().append("g")
+                .attr("class", "node")
+                .call(force.drag);
+
+
+        node.selectAll("path")
+                .data(function(d, i) {return pie(d.proportions); })
+                .enter()
+                .append("svg:path")
+                .attr("class", "inner")
+                .attr("d", d3.svg.arc()
+                        .outerRadius(function(d, i) { return d.data.radius; })
+                        .innerRadius(0))
+                .attr("fill", function(d, i) { return color(d.data.colorIn); })
+        ;
+
+
+        node.selectAll("path").select("path")
+                .data(function(d, i) {return pie(d.proportions); })
+                .enter()
+                .append("svg:path")
+                .attr("d", d3.svg.arc()
+                        .outerRadius(function(d, i) { return d.data.radius+d.data.radius/3+1; })
+                        .innerRadius(function(d, i) { return d.data.radius+1; }))
+                .attr("fill", function(d, i) { return color(d.data.colorOut); });
+
+
+
+        force.on("tick", function() {
+            link.attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; });
+
+            node.attr("x", function(d) { return d.x; })
+                    .attr("y", function(d) { return d.y; })
+                    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"});
+        });
+
+    });
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

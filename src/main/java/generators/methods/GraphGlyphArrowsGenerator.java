@@ -1,30 +1,32 @@
 package generators.methods;
 
-import POJO.ParamsGraphArrows;
+import POJO.ParamsGlyph;
+import POJO.ParamsGlyphArrows;
 
 import java.util.Random;
 
 /**
- * Created by guardeec on 27.01.16.
+ * Created by guardeec on 28.01.16.
  */
-public class GraphArrowsGenerator {
+public class GraphGlyphArrowsGenerator {
     /*
-    генерация json для проверки ориентированного графа
+    генерация json для проверки графа с глифами
      */
-    public static String generateGraphArrows(int numberOfNodes){
-        ParamsGraphArrows params = new ParamsGraphArrows();
+    public static String generateGraphGlyphArrows(int numberOfNodes){
+        ParamsGlyphArrows params = new ParamsGlyphArrows();
         Random random = new Random();
 
         //Добавляем ноды
         for (int i=0; i<numberOfNodes; i++){
-            int radius = random.nextInt(10);
+            int radius = random.nextInt(15);
             if (radius<5){
                 radius=5;
             }
             params.addNode(
                     Integer.toString(i),
-                    random.nextInt(10),
-                    radius
+                    radius,
+                    new int[] {random.nextInt(3), random.nextInt(3), random.nextInt(3), random.nextInt(3)},
+                    new int[] {random.nextInt(3), random.nextInt(3), random.nextInt(3), random.nextInt(3)}
             );
         }
 

@@ -44,15 +44,14 @@ public class ParamsGraphArrows {
     //
     // нужно обработать исключения
     //
-    public void addLink(int source, int target, int value, int color, float opacity, boolean arrows){
+    public void addLink(int source, int target, int width, int color, float opacity){
         Map<String, Object> link = new LinkedHashMap<String, Object>();
         link.put("source", source);
         link.put("target", target);
-        link.put("value", value);
+        link.put("width", width);
         link.put("color", color);
         link.put("opacity", opacity);
         link.put("name", Integer.toString(source)+"to"+Integer.toString(target));
-        link.put("arrows",arrows);
         Map<String, Object> targetNode = (Map<String, Object>) graph.get("nodes").get(target);
 
         //радиус в линке нужен для правильного отображения положения стрелочек ориентирванного графа

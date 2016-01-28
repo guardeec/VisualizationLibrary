@@ -2,6 +2,7 @@ package generators.servlets;
 
 import generators.methods.GraphArrowsGenerator;
 import generators.methods.GraphGenerator;
+import generators.methods.GraphGlyphArrowsGenerator;
 import generators.methods.GraphGlyphGenerator;
 
 import javax.servlet.ServletException;
@@ -34,7 +35,8 @@ public class GetJson extends HttpServlet {
             в запросе задаётся какой набор данных необходим:
             0 - неориентированный граф
             1 - ориентированный граф
-            2 - граф с глифами
+            2 - неориентированный граф с глифами
+            3 - ориентированный граф с глифами
         */
         int typeOfVisualisation = Integer.parseInt(request.getParameterMap().get("type")[0]);
 
@@ -50,6 +52,9 @@ public class GetJson extends HttpServlet {
             }
             case 2:
                 json = GraphGlyphGenerator.generateGraphGlyph(numberOfNodes);
+                break;
+            case 3:
+                json = GraphGlyphArrowsGenerator.generateGraphGlyphArrows(numberOfNodes);
                 break;
         }
 
