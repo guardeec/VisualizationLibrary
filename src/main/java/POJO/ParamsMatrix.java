@@ -25,9 +25,10 @@ public class ParamsMatrix {
         this.matrix.get("nodes").add(node);
     }
 
-    public void addLink(int sourseId, int targetId, int color, float opacity){
+    public void addLink(int sourceId, int targetId, int color, float opacity, int id){
         Map<String, Object> link = new LinkedHashMap<>();
-        link.put("sourse", sourseId);
+        link.put("id", id);
+        link.put("source", sourceId);
         link.put("target", targetId);
         link.put("color", color);
         link.put("opacity", opacity);
@@ -35,8 +36,8 @@ public class ParamsMatrix {
     }
 
     public String getJSON(){
+        Collections.shuffle(matrix.get("links"));
         Gson gson = new Gson();
         return gson.toJson(matrix);
     }
-
 }

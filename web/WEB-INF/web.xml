@@ -26,6 +26,10 @@
         <servlet-name>GraphGlyphArrows</servlet-name>
         <servlet-class>servlets.GraphGlyphArrows</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Matrix</servlet-name>
+        <servlet-class>servlets.Matrix</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>GetJson</servlet-name>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>GraphGlyphArrows</servlet-name>
         <url-pattern>/graphGlyphArrows</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Matrix</servlet-name>
+        <url-pattern>/matrix</url-pattern>
     </servlet-mapping>
    
     

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+
+<div id="option">
+    <input name="updateButton"
+           type="button"
+           value="Update"
+           onclick="updateData()" />
+</div>
+
+<script type="text/javascript">
+
+    var color = d3.scale.category10(),
+            paddingMatrix = 30,
+            matrixWidth = 500,
+            matrixHeight = 500,
+            paddingLines = 1;
+
+    var svg = d3.select("body").append("svg")
+            .attr("width", matrixWidth+paddingMatrix)
+            .attr("height", matrixHeight+paddingMatrix)
+            ;
+
+    var cells,
+            strokeTexts,
+            columnTexts
+            ;
+
+    var nodesNumber;
+    var linksNumber;
+
+    d3.json("http://localhost:8080/getJson?nodes=60&type=4", function(d) {
+
+        nodesNumber = d.nodes.length;
+        linksNumber = d.links.length;
+
+        svg.append("rect")
+                .attr("class", "background")
+                .attr("width", matrixWidth)
+                .attr("height", matrixHeight)
+                .attr("x", paddingMatrix)
+                .attr("y", paddingMatrix)
+                .style("fill", "grey")
+                .style("opacity", 0.15)
+        ;
+
+        svg.selectAll("background")
+                .data(d.nodes)
+                .enter()
+                .append("rect")
+                .attr("class", "column")
+                .attr("width", paddingLines)
+                .attr("height", matrixHeight)
+                .attr("x", function(d){
+                    return d.id*matrixWidth/nodesNumber+paddingMatrix;
+                })
+                .attr("y", paddingMatrix)
+                .style("fill", "white")
+        ;
+
+        svg.selectAll("background")
+                .data(d.nodes)
+                .enter()
+                .append("rect")
+                .attr("class", "stroke")
+                .attr("width", matrixWidth)
+                .attr("height", paddingLines)
+                .attr("x", paddingMatrix)
+                .attr("y", function(d){
+                    return d.id*matrixHeight/nodesNumber+paddingMatrix;
+                })
+                .style("fill", "white")
+        ;
+
+        strokeTexts = svg.selectAll("background")
+                .data(d.nodes)
+                .enter()
+                .append("text")
+                .attr("class", "strokeText")
+                .attr("x", function(d){
+                    return (paddingMatrix - (d.id.toString().length*(matrixWidth/nodesNumber-paddingLines)/2))-3;
+                })
+                .attr("y", function(d){
+                    return d.id*matrixHeight/nodesNumber+paddingMatrix+matrixWidth/nodesNumber-paddingLines;
+                })
+
+                .text( function(d){return d.name;})
+
+                .style("font-size", (matrixWidth/nodesNumber-paddingLines).toString()+"px")
+
+                .style("fill", "black")
+        ;
+        columnTexts = svg.selectAll("background")
+                .data(d.nodes)
+                .enter()
+                .append("text")
+                .attr("class", "columnText")
+                .attr("x", -paddingMatrix+3)
+                .attr("y", function(d){
+                    return d.id*matrixHeight/nodesNumber+paddingMatrix+matrixWidth/nodesNumber-paddingLines;
+                })
+                .attr("transform", function(){
+                    return "rotate(-90)";
+                })
+
+                .text( function(d){return d.name;})
+
+                .style("font-size", (matrixWidth/nodesNumber-paddingLines).toString()+"px")
+
+                .style("fill", "black")
+        ;
+
+
+
+       cells = svg.selectAll("background")
+               .data(d.links)
+               .enter()
+               .append("rect")
+               .attr("class", function(d){
+                   console.log(d.source+" "+ d.target);
+                   return d.id.toString();
+               })
+               .attr("width", matrixWidth/nodesNumber-paddingLines)
+               .attr("height", matrixHeight/nodesNumber-paddingLines)
+               .attr("x", function(d){
+                   return d.source*matrixWidth/nodesNumber+paddingLines+paddingMatrix;
+               })
+               .attr("y", function(d){
+                   return d.target*matrixHeight/nodesNumber+paddingLines+paddingMatrix;
+               })
+               .style("fill", function(d){
+                   return color(d.color);
+               })
+               .style("opacity", function(d){
+                   return d.opacity;
+               })
+               ;
+    });
+
+
+
+    function updateData(){
+        d3.json("http://localhost:8080/getJson?nodes=60&type=4", function(d) {
+            cells.data(d.links).transition()
+                    .attr("x", function(d){
+                        console.log(d.source+" "+ d.target);
+                        return d.source*matrixWidth/nodesNumber+paddingLines+paddingMatrix;
+                    })
+                  //  .transition()
+                    .attr("y", function(d){
+                        return d.target*matrixHeight/nodesNumber+paddingLines+paddingMatrix;
+                    })
+                 //   .transition()
+                    .style("opacity", function(d){
+                        return d.opacity;
+                    })
+            ;
+            columnTexts.data(d.links).transition()
+                    .attr("x", -paddingMatrix+3)
+                    .attr("y", function(d){
+                        return d.id*matrixHeight/nodesNumber+paddingMatrix+matrixWidth/nodesNumber-paddingLines;
+                    })
+            ;
+            strokeTexts.data(d.links).transition()
+                    .attr("x", function(d){
+                        return (paddingMatrix - (d.id.toString().length*(matrixWidth/nodesNumber-paddingLines)/2))-3;
+                    })
+                    .attr("y", function(d){
+                        return d.id*matrixHeight/nodesNumber+paddingMatrix+matrixWidth/nodesNumber-paddingLines;
+                    })
+            ;
+        });
+    }
+
+
+
+
+
+</script>
+
+

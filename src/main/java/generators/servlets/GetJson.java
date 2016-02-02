@@ -1,9 +1,7 @@
 package generators.servlets;
 
-import generators.methods.GraphArrowsGenerator;
-import generators.methods.GraphGenerator;
-import generators.methods.GraphGlyphArrowsGenerator;
-import generators.methods.GraphGlyphGenerator;
+import POJO.ParamsMatrix;
+import generators.methods.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,9 +35,9 @@ public class GetJson extends HttpServlet {
             1 - ориентированный граф
             2 - неориентированный граф с глифами
             3 - ориентированный граф с глифами
+            4 - матрица
         */
         int typeOfVisualisation = Integer.parseInt(request.getParameterMap().get("type")[0]);
-
         String json="";
         switch (typeOfVisualisation){
             case 0: {
@@ -55,6 +53,9 @@ public class GetJson extends HttpServlet {
                 break;
             case 3:
                 json = GraphGlyphArrowsGenerator.generateGraphGlyphArrows(numberOfNodes);
+                break;
+            case 4:
+                json = MatrixGenerator.generateMatrix(numberOfNodes);
                 break;
         }
 
