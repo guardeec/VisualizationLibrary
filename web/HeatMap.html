@@ -1,124 +1,87 @@
 <!DOCTYPE html>
-<html class="ocks-org do-not-copy">
-<meta charset="utf-8">
+<html lang="en">
+<head>
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
 
-<script src="//d3js.org/d3.v2.min.js" charset="utf-8"></script>
+<script type="text/javascript">
 
-<script>
+    var color = d3.scale.category10(),
+            paddingMatrix = 20,
+            width = 500+paddingMatrix,
+            height = 500+paddingMatrix,
+            paddingLines = 1;
 
     var svg = d3.select("body").append("svg")
-            .attr("width")
-            .attr("height")
-            .append("g");
+            .attr("width", width)
+            .attr("height", height)
+            ;
 
-    d3.json("miserables.json", function(miserables) {
+    d3.json("miserables.json", function(d) {
 
-        var     matrix = [],
-                nodes = miserables.nodes,
-                links = miserables.links
-                ;
-
-        // Convert links to matrix; count character occurrences.
-        miserables.links.forEach(function(link) {
-            matrix[link.source][link.target].value += link.value;
-            matrix[link.target][link.source].value += link.value;
-            matrix[link.source][link.source].value += link.value;
-            matrix[link.target][link.target].value += link.value;
-            nodes[link.source].count += link.value;
-            nodes[link.target].count += link.value;
-        });
-
+        var nodesNumber = d.nodes.length;
 
         svg.append("rect")
-                .attr("fill", "red")
+                .attr("class", "background")
                 .attr("width", width)
-                .attr("height", height);
+                .attr("height", height)
+                .attr("x", 0)
+                .attr("y", 0)
+                .style("fill", "grey")
+                .style("opacity", 0.15)
+        ;
 
-
-        var row = svg.selectAll(".row")
-                .data()
-                .enter().append("g")
-                .attr("class", "row")
-                .attr("transform", function(d, i) { return "translate(0," + x(i) + ")"; })
-                .each(row);
-
-
-        row.append("line")
-                .attr("x2", width);
-
-        row.append("text")
-                .attr("x", -6)
-                .attr("y", x.rangeBand() / 2)
-                .attr("dy", ".32em")
-                .attr("text-anchor", "end")
-                .text(function(d, i) { return nodes[i].name; });
-
-
-        var column = svg.selectAll(".column")
-                .data(matrix)
-                .enter().append("g")
+        svg.selectAll("background")
+                .data(d.nodes)
+                .enter()
+                .append("rect")
                 .attr("class", "column")
-                .attr("transform", function(d, i) { return "translate(" + x(i) + ")rotate(-90)"; });
+                .attr("width", paddingLines)
+                .attr("height", height)
+                .attr("x", function(d){
+                    return d.id*width/nodesNumber;
+                })
+                .attr("y", 0)
+                .style("fill", "white")
+        ;
 
-        column.append("line")
-                .attr("x1", -width);
+        svg.selectAll("g")
+                .data(d.nodes)
+                .enter()
+                .append("rect")
+                .attr("class", "column")
+                .attr("width", width)
+                .attr("height", paddingLines)
+                .attr("x", 0)
+                .attr("y", function(d){
+                    return d.id*height/nodesNumber;
+                })
+                .style("fill", "white")
+        ;
 
-        column.append("text")
-                .attr("x", 6)
-                .attr("y", x.rangeBand() / 2)
-                .attr("dy", ".32em")
-                .attr("text-anchor", "start")
-                .text(function(d, i) { return nodes[i].name; });
 
-        function row(row) {
-            var cell = d3.select(this).selectAll(".cell")
-                    .data(row.filter(function(d) { return d.z; }))
-                    .enter().append("rect")
-                    .attr("class", "cell")
-                    .attr("x", function(d) { return x(d.x); })
-                    .attr("width", x.rangeBand())
-                    .attr("height", x.rangeBand())
-                    .style("fill-opacity", function(d) { return z(d.z); })
-                    .style("fill", function(d) { return nodes[d.x].group == nodes[d.y].group ? c(nodes[d.x].group) : null; })
-                    .on("mouseover", mouseover)
-                    .on("mouseout", mouseout);
-        }
+       svg.selectAll("g")
+               .data(d.links)
+               .enter()
+               .append("rect")
+               .attr("class", "cell")
+               .attr("width", width/nodesNumber-paddingLines)
+               .attr("height", height/nodesNumber-paddingLines)
 
-        function mouseover(p) {
-            d3.selectAll(".row text").classed("active", function(d, i) { return i == p.y; });
-            d3.selectAll(".column text").classed("active", function(d, i) { return i == p.x; });
-        }
-
-        function mouseout() {
-            d3.selectAll("text").classed("active", false);
-        }
-
-        d3.select("#order").on("change", function() {
-            clearTimeout(timeout);
-            order(this.value);
-        });
-
-        function order(value) {
-            x.domain(orders[value]);
-
-            var t = svg.transition().duration(2500);
-
-            t.selectAll(".row")
-                    .delay(function(d, i) { return x(i) * 4; })
-                    .attr("transform", function(d, i) { return "translate(0," + x(i) + ")"; })
-                    .selectAll(".cell")
-                    .delay(function(d) { return x(d.x) * 4; })
-                    .attr("x", function(d) { return x(d.x); });
-
-            t.selectAll(".column")
-                    .delay(function(d, i) { return x(i) * 4; })
-                    .attr("transform", function(d, i) { return "translate(" + x(i) + ")rotate(-90)"; });
-        }
-
-        var timeout = setTimeout(function() {
-            order("group");
-            d3.select("#order").property("selectedIndex", 2).node().focus();
-        }, 5000);*/
+               .attr("x", function(d){
+                   return d.sourse*width/nodesNumber+paddingLines;
+               })
+               .attr("y", function(d){
+                   return d.target*height/nodesNumber+paddingLines;
+               })
+               .style("fill", function(d){
+                   return color(d.color);
+               })
+               .style("opacity", function(d){
+                   return d.opacity;
+               })
+               ;
     });
 
 

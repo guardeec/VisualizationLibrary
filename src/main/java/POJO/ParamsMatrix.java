@@ -25,11 +25,12 @@ public class ParamsMatrix {
         this.matrix.get("nodes").add(node);
     }
 
-    public void addLink(int sourseId, int targetId, int value){
+    public void addLink(int sourseId, int targetId, int color, float opacity){
         Map<String, Object> link = new LinkedHashMap<>();
         link.put("sourse", sourseId);
         link.put("target", targetId);
-        link.put("value", value);
+        link.put("color", color);
+        link.put("opacity", opacity);
         this.matrix.get("links").add(link);
     }
 
