@@ -1,6 +1,6 @@
 package generators.servlets;
 
-import POJO.ParamsMatrix;
+import store.MatrixStore;
 import generators.methods.*;
 
 import javax.servlet.ServletException;
@@ -26,10 +26,6 @@ public class GetJson extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         /*
-            количество нодов задаётся в запросе
-        */
-        int numberOfNodes = Integer.parseInt(request.getParameterMap().get("nodes")[0]);
-        /*
             в запросе задаётся какой набор данных необходим:
             0 - неориентированный граф
             1 - ориентированный граф
@@ -41,22 +37,32 @@ public class GetJson extends HttpServlet {
         String json="";
         switch (typeOfVisualisation){
             case 0: {
+                int numberOfNodes = Integer.parseInt(request.getParameterMap().get("nodes")[0]);
                 json = GraphGenerator.generateGraph(numberOfNodes);
                 break;
             }
             case 1: {
+                int numberOfNodes = Integer.parseInt(request.getParameterMap().get("nodes")[0]);
                 json = GraphArrowsGenerator.generateGraphArrows(numberOfNodes);
                 break;
             }
-            case 2:
+            case 2: {
+                int numberOfNodes = Integer.parseInt(request.getParameterMap().get("nodes")[0]);
                 json = GraphGlyphGenerator.generateGraphGlyph(numberOfNodes);
                 break;
-            case 3:
+            }
+            case 3:{
+                int numberOfNodes = Integer.parseInt(request.getParameterMap().get("nodes")[0]);
                 json = GraphGlyphArrowsGenerator.generateGraphGlyphArrows(numberOfNodes);
                 break;
-            case 4:
-                json = MatrixGenerator.generateMatrix(numberOfNodes);
+            }
+            case 4:{
+                boolean up = Boolean.parseBoolean(request.getParameterMap().get("up")[0]);
+                int metric = Integer.parseInt(request.getParameterMap().get("metric")[0]);
+                boolean stroke = Boolean.parseBoolean(request.getParameterMap().get("stroke")[0]);
+                json = MatrixStore.getInstance().getSortedMatrixFromStore(up, metric, stroke);
                 break;
+            }
         }
 
         PrintWriter out = response.getWriter();
