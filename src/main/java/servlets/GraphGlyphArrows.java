@@ -13,6 +13,9 @@ import java.io.IOException;
  */
 @WebServlet(name = "GraphGlyphArrows")
 public class GraphGlyphArrows extends HttpServlet {
+    /*
+    Сервлет для отображения ориентированного графа с глифами
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }

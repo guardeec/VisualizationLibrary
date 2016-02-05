@@ -57,6 +57,7 @@ public class GetJson extends HttpServlet {
                 break;
             }
             case 4:{
+                //в случае матрицы необходимо получить параметры сортировки
                 boolean up = Boolean.parseBoolean(request.getParameterMap().get("up")[0]);
                 int metric = Integer.parseInt(request.getParameterMap().get("metric")[0]);
                 boolean stroke = Boolean.parseBoolean(request.getParameterMap().get("stroke")[0]);

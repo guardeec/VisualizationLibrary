@@ -13,6 +13,9 @@ import java.io.IOException;
  */
 @WebServlet(name = "Matrix")
 public class Matrix extends HttpServlet {
+    /*
+    Сервлет для отображения матрицы
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }

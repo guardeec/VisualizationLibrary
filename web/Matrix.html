@@ -21,12 +21,12 @@
     <select id="Metric">
         <option value="0">Name</option>
         <option value="1">Opacity</option>
-        <option value="2">Color</option>
+        <option value="2">Number</option>
     </select>
 </div>
 <div id="3" class="wrapper-dropdown-1">
     <select id="Line">
-        <option value="true">Stroke</option>
+        <option value="true">Row</option>
         <option value="false">Column</option>
     </select>
 </div>
@@ -52,7 +52,7 @@
     var nodesNumber;
     var linksNumber;
 
-    d3.json("http://192.168.1.227:8080/getJson?type=4&up=true&metric=0&stroke=true", function(d) {
+    d3.json("http://localhost:8080/getJson?type=4&up=true&metric=0&stroke=true", function(d) {
 
         nodesNumber = d.nodes.length;
         linksNumber = d.links.length;
@@ -182,7 +182,7 @@
         var metric=d3.select("#Metric").property("value");
         var stroke=d3.select("#Line").property("value");
 
-        d3.json("http://192.168.1.227:8080/getJson?type=4&up="+up+"&metric="+metric+"&stroke="+stroke, function(d) {
+        d3.json("http://localhost:8080/getJson?type=4&up="+up+"&metric="+metric+"&stroke="+stroke, function(d) {
             animateMatrix(d);
         });
     }
