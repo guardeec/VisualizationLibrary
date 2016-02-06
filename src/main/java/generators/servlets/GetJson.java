@@ -32,6 +32,7 @@ public class GetJson extends HttpServlet {
             2 - неориентированный граф с глифами
             3 - ориентированный граф с глифами
             4 - матрица
+            5 - карта деревьев
         */
         int typeOfVisualisation = Integer.parseInt(request.getParameterMap().get("type")[0]);
         String json="";
@@ -62,6 +63,10 @@ public class GetJson extends HttpServlet {
                 int metric = Integer.parseInt(request.getParameterMap().get("metric")[0]);
                 boolean stroke = Boolean.parseBoolean(request.getParameterMap().get("stroke")[0]);
                 json = MatrixStore.getInstance().getSortedMatrixFromStore(up, metric, stroke);
+                break;
+            }
+            case 5:{
+                json = TreeMapGenerator.generateTreeMap(Integer.parseInt(request.getParameterMap().get("nodes")[0]));
                 break;
             }
         }

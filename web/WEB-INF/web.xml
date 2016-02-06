@@ -30,6 +30,10 @@
         <servlet-name>Matrix</servlet-name>
         <servlet-class>servlets.Matrix</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TreeMap</servlet-name>
+        <servlet-class>servlets.TreeMap</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>GetJson</servlet-name>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>Matrix</servlet-name>
         <url-pattern>/matrix</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TreeMap</servlet-name>
+        <url-pattern>/treeMap</url-pattern>
     </servlet-mapping>
    
     
