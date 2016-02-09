@@ -1,6 +1,7 @@
 package POJO;
 
 import com.google.gson.Gson;
+import generators.methods.Color;
 
 import java.util.*;
 
@@ -43,7 +44,7 @@ public class ParamsMatrix {
     id цвета и 0...1 прозрачности
     id линка возвращается
      */
-    public int addLink(int sourceId, int targetId, int color, float opacity){
+    public int addLink(int sourceId, int targetId, float color, float opacity){
         Map<String, Object> link = new LinkedHashMap<>();
         link.put("id", this.matrix.get("links").size());
         link.put("source", sourceId);
@@ -52,7 +53,13 @@ public class ParamsMatrix {
         link.put("row", sourceId);
         link.put("column", targetId);
 
-        link.put("color", color);
+        Map<String, Integer> colors = new LinkedHashMap<>();
+        Integer[] rgb = Color.getColor(color);
+        colors.put("red", rgb[0]);
+        colors.put("green", rgb[1]);
+        colors.put("blue", rgb[2]);
+        link.put("color", colors);
+
         link.put("opacity", opacity);
         this.matrix.get("links").add(link);
 

@@ -13,6 +13,9 @@ public class Host {
     }
 
     public Host(Integer id, String name) {
+        if (name.length()>30){
+            throw new IllegalArgumentException("name.length must be < 30");
+        }
         this.id = id;
         this.name = name;
     }
@@ -30,6 +33,9 @@ public class Host {
     }
 
     public void setName(String name) {
+        if (name.length()>30){
+            throw new IllegalArgumentException("name.length must be < 30");
+        }
         this.name = name;
     }
 

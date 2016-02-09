@@ -33,29 +33,44 @@
 
 <script type="text/javascript">
 
-    var color = d3.scale.category10(),
-            paddingMatrix = 30,
-            matrixWidth = 500,
-            matrixHeight = 500,
-            paddingLines = 1;
-
-    var svg = d3.select("body").append("svg")
-            .attr("width", matrixWidth+paddingMatrix)
-            .attr("height", matrixHeight+paddingMatrix)
-            ;
+    var names,
+            nodesNumber,
+            linksNumber,
+            matrixWidth,
+            matrixHeight,
+            paddingLines,
+            paddingMatrix;
 
     var cells,
             strokeTexts,
             columnTexts
             ;
 
-    var nodesNumber;
-    var linksNumber;
-
     d3.json("http://localhost:8080/getJson?type=4&up=true&metric=0&stroke=true", function(d) {
 
+        names = d.nodes;
         nodesNumber = d.nodes.length;
         linksNumber = d.links.length;
+
+
+        matrixWidth = 500,
+        matrixHeight = 500,
+        paddingLines = 1,
+        paddingMatrix = d3.max(names, function(d){
+                    return d.name.length;
+                })*(matrixWidth/nodesNumber-paddingLines)/3*2;
+
+
+        var svg = d3.select("body").append("svg")
+                .attr("width", matrixWidth+paddingMatrix)
+                .attr("height", matrixHeight+paddingMatrix)
+                ;
+
+
+
+
+
+
 
         /*
         Серый фон
@@ -112,9 +127,9 @@
                 .enter()
                 .append("text")
                 .attr("class", "strokeText")
-                .attr("x", function(d){
-                    return paddingMatrix - matrixWidth/nodesNumber-paddingLines-3;
-                })
+                .attr("x", 0 /* function(d){
+                    return paddingMatrix - (matrixWidth/nodesNumber-paddingLines+3)*d.name.size;
+                }*/)
                 .attr("y", function(d){
                     return d.position*matrixHeight/nodesNumber+paddingMatrix+matrixWidth/nodesNumber-paddingLines;
                 })
@@ -168,7 +183,7 @@
                    return d.column*matrixHeight/nodesNumber+paddingLines+paddingMatrix;
                })
                .style("fill", function(d){
-                   return color(d.color);
+                   return "rgb("+d.color.red.toString()+","+d.color.green.toString()+","+ d.color.blue.toString()+")";
                })
                .style("opacity", function(d){
                    return d.opacity;

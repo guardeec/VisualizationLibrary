@@ -69,7 +69,7 @@ public class MatrixStore {
             Router router = net.getNetwork().get(i);
             paramsMatrixObject.addNode(router.getName());
             List<Host> hosts = net.getNetwork().get(i).getHosts();
-            int color = random.nextInt(5);
+            float color = random.nextFloat();
 
             //добавляем хосты роутера
             for (int q = 0 ; q < hosts.size(); q++){
