@@ -1,6 +1,7 @@
 package POJO;
 
 import com.google.gson.Gson;
+import generators.methods.Color;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -44,12 +45,19 @@ public class ParamsGraph {
     //
     // нужно обработать исключения
     //
-    public void addLink(int source, int target, int width, int color, float opacity, boolean arrows){
+    public void addLink(int source, int target, int width, float color, float opacity, boolean arrows){
         Map<String, Object> link = new LinkedHashMap<String, Object>();
         link.put("source", source);     //имя ноды - сорс линка
         link.put("target", target);     //имя ноды - таргет линка
         link.put("width", width);       //толщина линка
-        link.put("color", color);       //цвет линка
+
+        Map<String, Integer> colors = new LinkedHashMap<>();
+        Integer[] rgb = Color.getColor(color);
+        colors.put("red", rgb[0]);
+        colors.put("green", rgb[1]);
+        colors.put("blue", rgb[2]);
+        
+        link.put("color", colors);       //цвет линка
         link.put("opacity", opacity);   //прозрачность линка
         graph.get("links").add(link);
     }

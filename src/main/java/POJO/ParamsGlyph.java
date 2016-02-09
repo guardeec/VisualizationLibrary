@@ -1,6 +1,7 @@
 package POJO;
 
 import com.google.gson.Gson;
+import generators.methods.Color;
 
 import java.util.*;
 
@@ -55,12 +56,19 @@ public class ParamsGlyph {
     //
     // нужно обработать исключения
     //
-    public void addLink(int source, int target, int width, int color, float opacity){
+    public void addLink(int source, int target, int width, float color, float opacity){
         Map<String, Object> link = new LinkedHashMap<>();
         link.put("source", source);     //имя ноды - начала линка
         link.put("target", target);     //имя ноды - конец линка
         link.put("width", width);       //толщина линка
-        link.put("color", color);       //цвет линка
+
+        Map<String, Integer> colors = new LinkedHashMap<>();
+        Integer[] rgb = Color.getColor(color);
+        colors.put("red", rgb[0]);
+        colors.put("green", rgb[1]);
+        colors.put("blue", rgb[2]);
+        link.put("color", colors);
+
         link.put("opacity", opacity);   //прозрачность линка
         graph.get("links").add(link);
     }

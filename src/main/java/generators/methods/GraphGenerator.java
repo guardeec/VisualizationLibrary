@@ -38,12 +38,11 @@ public class GraphGenerator {
             if (opacity<0.3){
                 opacity=0.3F;
             }
-            int color = random.nextInt(10);
             params.addLink(
                     i,
                     random.nextInt(numberOfNodes),
                     value,
-                    color,
+                    random.nextFloat(),
                     opacity,
                     false
             );

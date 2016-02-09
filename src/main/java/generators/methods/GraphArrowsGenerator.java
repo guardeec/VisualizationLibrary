@@ -35,12 +35,11 @@ public class GraphArrowsGenerator {
             if (opacity<0.3){
                 opacity=0.3F;
             }
-            int color = 5;
             params.addLink(
                     i,
                     random.nextInt(numberOfNodes),
                     value,
-                    color,
+                    random.nextFloat(),
                     opacity
             );
         }

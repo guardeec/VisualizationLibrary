@@ -1,6 +1,7 @@
 package POJO;
 
 import com.google.gson.Gson;
+import generators.methods.Color;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -59,12 +60,19 @@ public class ParamsGlyphArrows {
     //
     // нужно обработать исключения
     //
-    public void addLink(int source, int target, int width, int color, float opacity){
+    public void addLink(int source, int target, int width, float color, float opacity){
         Map<String, Object> link = new LinkedHashMap<String, Object>();
         link.put("source", source);
         link.put("target", target);
         link.put("width", width);
-        link.put("color", color);
+
+        Map<String, Integer> colors = new LinkedHashMap<>();
+        Integer[] rgb = Color.getColor(color);
+        colors.put("red", rgb[0]);
+        colors.put("green", rgb[1]);
+        colors.put("blue", rgb[2]);
+        link.put("color", colors);
+
         link.put("opacity", opacity);
         link.put("name", Integer.toString(source)+"to"+Integer.toString(target));
         Map<String, Object> targetNode = (Map<String, Object>) graph.get("nodes").get(target);
